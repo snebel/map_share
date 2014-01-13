@@ -9,6 +9,7 @@ gem 'pg'
 gem 'rspec-rails'
 gem 'capybara'
 gem 'pry'
+gem 'devise'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
