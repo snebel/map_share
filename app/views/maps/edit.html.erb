@@ -1,10 +1,5 @@
 <h1>Customize Map: <%= @map.title %></h1>
-
-<%= form_for @map do |f| %>
-  <%= f.label :title %>
-  <%= f.text_field :title, placeholder: "Map title", class: "form-control" %>
-  <%= f.submit nil, class:"btn btn-primary", id:"submit" %>
-<% end %>
+<%= link_to "finished", map_path(@map) %>
 
 <h3>Current Places</h3>
 <ul>
@@ -22,5 +17,6 @@
   <%= f.text_field :link, placeholder: "Place url (optional)" %>
   <%= f.label :description %>
   <%= f.text_area :description, placeholder: "Notes (optional)" %>
+  <%= f.hidden_field :map_id, value: @map.id %>
   <%= f.submit "Add Place", id: "submit" %>
 <% end %>

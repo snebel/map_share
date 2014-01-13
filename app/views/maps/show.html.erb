@@ -3,4 +3,11 @@
 <ul>
 	<li><%= @map.title %></li>
 	<li><%= @map.city %></li>
+  <li>Places
+    <ul>
+      <% @map.places.each do |place| %>
+        <li><%= place.title %></li>
+      <% end %>
+    </ul>
+  </li>
 </ul>
