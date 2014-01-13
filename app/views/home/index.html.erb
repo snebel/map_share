@@ -1,3 +1,6 @@
 <h1>Welcome to Mapshare</h1>
-<h3><a href='/maps/new'>Create a new map</a></h3>
-<h3><a href=''>See my maps</a></h3>
+<h3><a href='/maps/new'>Add a new map</a></h3>
+
+<% @maps.each do |map| %>
+	<a href=<%= map_path(map)%>><%="#{map.title} #{map.city}"%></a>
+<% end %>
