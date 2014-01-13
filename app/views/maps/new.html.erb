@@ -1,0 +1,9 @@
+<h1>Add a new map</h1>
+
+<%= form_for @map do |f| %>
+ 	<%= f.label :title %>
+ 	<%= f.text_field :title, placeholder: "Map title" %>
+ 	<%= f.label :city %>
+ 	<%= f.text_field :city, placeholder: "What city?" %>
+ 	<%= f.submit "Create Map" %>
+<% end %>
