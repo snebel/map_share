@@ -11,16 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140113201135) do
+ActiveRecord::Schema.define(version: 20140113212442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "maps", force: true do |t|
-    t.string "title"
-    t.string "city"
-    t.float  "center_lat"
-    t.float  "center_lng"
+    t.string  "title"
+    t.string  "city"
+    t.float   "center_lat"
+    t.float   "center_lng"
+    t.integer "user_id"
   end
 
   create_table "places", force: true do |t|

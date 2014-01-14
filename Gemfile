@@ -10,6 +10,8 @@ gem 'rspec-rails'
 gem 'capybara'
 gem 'pry'
 gem 'devise'
+gem 'gmaps4rails'
+gem 'geocoder'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 

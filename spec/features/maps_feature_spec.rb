@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+
 # HAVING TROUBLE GETTING CAPYBARA TO FIND FIELDS
 
 describe MapsController do 
@@ -18,12 +19,16 @@ describe MapsController do
 
   describe "when visiting a map's edit page" do
     before do
-      @map = Map.create
+      @user = User.create(email: 'bob@example.com', password: 'password')
+      login_as(@user)
+      @map = Map.create(user_id: @user.id)
       visit edit_map_path(@map)
     end
     describe "when we fill in the place form" do
       before do
-        fill_in :title, with: "random place"
+        
+        current_path.should == edit_map_path(@map)
+        fill_in "place_title", with: "random place"
         click_button "submit"
       end
       it "creates a new place and adds it to the map" do

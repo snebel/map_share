@@ -6,7 +6,7 @@ class MapsController < ApplicationController
 	end
 
 	def create
-		map = Map.create(title: params[:map][:title], city: params[:map][:city])
+		map = Map.create(map_params)
 		# geocode params[:map][:city]
 		# map.center_lat = ..., map.center_lng = ...
 		redirect_to edit_map_path(map)
@@ -18,7 +18,11 @@ class MapsController < ApplicationController
 
 	def edit
 		@map = Map.find(params[:id])
-	  @place = Place.new
+		@place = Place.new
+		if current_user != @map.user
+			redirect_to root_path
+			alert	  	
+	  end
 	end
 
 	def update
@@ -28,3 +32,8 @@ class MapsController < ApplicationController
 		redirect_to root_path
 	end
 end
+
+private
+  def map_params
+    params.require('map').permit(:title, :city, :user_id)
+  end

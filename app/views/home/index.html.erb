@@ -1,6 +1,23 @@
 <h1>Welcome to Mapshare</h1>
 <h3><a href='/maps/new'>Add a new map</a></h3>
 
-<% @maps.each do |map| %>
-	<a href=<%= map_path(map)%>><%="#{map.title} #{map.city}"%></a>
+<% if user_signed_in? %>
+  <table border="1px">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>City</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% current_user.maps.each do |map| %>
+      <tr>
+        <td><%= link_to(map.title, map_path(map)) %></td>
+        <td><%= map.city %></td>
+        <td><%= link_to("edit", edit_map_path(map)) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% end %>
+
