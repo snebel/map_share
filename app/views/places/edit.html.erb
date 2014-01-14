@@ -1,0 +1,7 @@
+<%= form_for @place do |f| %>
+  <%= f.text_field :title, placeholder: "Title" %>
+  <%= f.text_field :address, placeholder: "Address or landmark" %>
+  <%= f.text_field :link, placeholder: "url (optional)" %>
+  <%= f.text_field :description, placeholder: "description (optional)" %>
+  <%= f.submit "Edit Place", id: "submit" %>
+<% end %>

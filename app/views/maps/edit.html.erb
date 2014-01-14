@@ -29,7 +29,7 @@
       <td><%= link_to place.link, place.link, target: "_blank" %></td>
       <td><%= place.description %></td>
       <td>
-        <a href="<%=edit_place_path(place)%>">Edit</a>
+        <%= link_to "edit", edit_place_path(place) %>
         <%= button_to "delete", place, :method => :delete %> 
       </td>
     </tr>
