@@ -1,35 +1,56 @@
 <script type="text/javascript">
-  handler = Gmaps.build('Google');
-  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-  markers = handler.addMarkers(<%=raw @hash.to_json %>);
-  handler.bounds.extendWith(markers);
-  handler.fitMapToBounds();
-  });
+  setTimeout(
+  window.onload = function() {
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+    });
+  }, 1)
 </script>
 
 <h1>Customize Map: <%= @map.title %></h1>
 <%= link_to "finished", map_path(@map) %>
 
 <h3>Current Places</h3>
-<ul>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Address</th>
+    <th>Link</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
   <% @map.places.each do |place| %>
-    <li><%= place.title %></li>
+    <tr>
+      <td><%= place.title %></td>
+      <td><%= place.address %></td>
+      <td><%= link_to place.link, place.link, target: "_blank" %></td>
+      <td><%= place.description %></td>
+      <td>
+        <a href="<%=edit_place_path(place)%>">Edit</a>
+        <%= button_to "delete", place, :method => :delete %> 
+      </td>
+    </tr>
   <% end %>
-</ul>
+  <tr>
+    <td>Add new place:</td>
+    <td colspan="4">
+      <%= form_for @place do |f| %>
+        <%= f.text_field :title, placeholder: "Title" %>
+        <%= f.text_field :address, placeholder: "Address or landmark" %>
+        <%= f.text_field :link, placeholder: "url (optional)" %>
+        <%= f.text_field :description, placeholder: "description (optional)" %>
+        <%= f.hidden_field :map_id, value: @map.id %>
+        <%= f.submit "Add Place", id: "submit" %>
+      <% end %>
+    </td>
+  </tr>
+</table>
+
 
 <div style='width: 800px;'  class="map">
   <div id="map" class="map" style='width: 800px; height: 600px;'></div>
 </div>
 
-<%= form_for @place do |f| %>
-  <%= f.label :title %>
-  <%= f.text_field :title, placeholder: "Place title" %>
-  <%= f.label :address %>
-  <%= f.text_field :address, placeholder: "Street address" %>
-  <%= f.label :link %>
-  <%= f.text_field :link, placeholder: "Place url (optional)" %>
-  <%= f.label :description %>
-  <%= f.text_area :description, placeholder: "Notes (optional)" %>
-  <%= f.hidden_field :map_id, value: @map.id %>
-  <%= f.submit "Add Place", id: "submit" %>
-<% end %>

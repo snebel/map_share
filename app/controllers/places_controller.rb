@@ -5,6 +5,13 @@ class PlacesController < ApplicationController
     redirect_to edit_map_path(map)
   end
 
+  def destroy
+    place = Place.find(params[:id])
+    map = Map.find(place.map_id)
+    Place.delete(params[:id])
+    redirect_to edit_map_path(map)
+  end
+
 end
 
 private

@@ -19,7 +19,7 @@ class MapsController < ApplicationController
 			Gmaps4rails.build_markers(@places) do |place, marker|
   			marker.lat place.lat
   			marker.lng place.lng
-  			marker.infowindow place.title
+  			marker.infowindow("#{place.title}: #{place.description}")
 			end
 	end
 
@@ -35,7 +35,7 @@ class MapsController < ApplicationController
 			Gmaps4rails.build_markers(@places) do |place, marker|
   			marker.lat place.lat
   			marker.lng place.lng
-  			marker.infowindow place.title
+  			marker.infowindow("#{place.title}: #{place.description}")
 			end
 	end
 

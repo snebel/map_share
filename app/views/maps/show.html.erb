@@ -1,26 +1,35 @@
 <script type="text/javascript">
-  handler = Gmaps.build('Google');
-  handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-  markers = handler.addMarkers(<%=raw @hash.to_json %>);
-  handler.bounds.extendWith(markers);
-  handler.fitMapToBounds();
-  });
+  setTimeout(
+  window.onload = function() {
+    handler = Gmaps.build('Google');
+    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+    markers = handler.addMarkers(<%=raw @hash.to_json %>);
+    handler.bounds.extendWith(markers);
+    handler.fitMapToBounds();
+    });
+  }, 1)
 </script>
 
 <h1><%= "#{@map.title} (#{@map.city})" %></h1>
 <%= link_to "edit map", edit_map_path(@map) %>
 
-<ul>
-	<li><%= @map.title %></li>
-	<li><%= @map.city %></li>
-  <li>Places
-    <ul>
-      <% @map.places.each do |place| %>
-        <li><%= place.title %></li>
-      <% end %>
-    </ul>
-  </li>
-</ul>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Address</th>
+    <th>Link</th>
+    <th>Description</th>
+    <th></th>
+  </tr>
+  <% @map.places.each do |place| %>
+    <tr>
+      <td><%= place.title %></td>
+      <td><%= place.address %></td>
+      <td><%= link_to place.link, place.link, target: "_blank" %></td>
+      <td><%= place.description %></td>
+    </tr>
+  <% end %>
+</table>
 
 <div style='width: 800px;'  class="map">
   <div id="map" class="map" style='width: 800px; height: 600px;'></div>
