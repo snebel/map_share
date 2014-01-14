@@ -14,15 +14,29 @@ class MapsController < ApplicationController
 
 	def show
 		@map = Map.find(params[:id])
+		@places = @map.places
+		@hash = 
+			Gmaps4rails.build_markers(@places) do |place, marker|
+  			marker.lat place.lat
+  			marker.lng place.lng
+  			marker.infowindow place.title
+			end
 	end
 
 	def edit
 		@map = Map.find(params[:id])
-		@place = Place.new
 		if current_user != @map.user
 			redirect_to root_path
 			alert	  	
 	  end
+	  @place = Place.new
+	  @places = @map.places
+		@hash = 
+			Gmaps4rails.build_markers(@places) do |place, marker|
+  			marker.lat place.lat
+  			marker.lng place.lng
+  			marker.infowindow place.title
+			end
 	end
 
 	def update
