@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140113212442) do
+ActiveRecord::Schema.define(version: 20140114212650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,12 @@ ActiveRecord::Schema.define(version: 20140113212442) do
     t.float   "lng"
     t.string  "link"
     t.text    "description"
+    t.integer "map_id"
+  end
+
+  create_table "requests", force: true do |t|
+    t.integer "from_user"
+    t.integer "user_id"
     t.integer "map_id"
   end
 

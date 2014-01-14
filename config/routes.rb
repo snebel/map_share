@@ -16,6 +16,7 @@ MapShare::Application.routes.draw do
   # resources :products
     resources :maps
     resources :places
+    resources :requests
   # Example resource route with options:
   #   resources :products do
   #     member do

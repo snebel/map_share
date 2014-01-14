@@ -2,6 +2,21 @@
 <h3><a href='/maps/new'>Add a new map</a></h3>
 
 <% if user_signed_in? %>
+
+  <b>Inbox</b>
+  <table>
+    <% current_user.requests.each do |req| %>
+    <tr>
+      <% map = Map.find(req.map_id) %>
+        <td><%= User.find(req.from_user).email %> wants to share <%= link_to "#{map.title} (#{map.city})", map_path(map) %></td>
+        <td>Duplicate</td>
+        <td>Follow</td>
+        <td>Delete</td>
+    </tr>
+    <% end %>
+  </table>
+
+  <b>Your Maps</b>
   <table border="1px">
     <thead>
       <tr>
@@ -14,11 +29,30 @@
       <tr>
         <td><%= link_to(map.title, map_path(map)) %></td>
         <td><%= map.city %></td>
-        <td><%= link_to("edit", edit_map_path(map)) %></td>
+        <td><%= link_to("edit", edit_map_path(map)) %></td> 
         <td><%= button_to "delete", map, method: :delete %></td>
       </tr>
     <% end %>
     </tbody>
   </table>
+  
+  <h3>Share one of your maps:</h3>
+
+  <form action="/requests" method="post">
+    <select name="map_id" id="map_id">
+      <% current_user.maps.each do |map| %>
+        <option value="<%= map.id %>"><%= "#{map.title} (#{map.city})" %></option>
+      <% end %>
+    </select>
+    <select name="user_id" id="user_id">
+      <% @users.each do |user| %>
+        <option value="<%= user.id %>"><%= user.email %></option>
+      <% end %>
+    </select>
+    <input type="hidden" name="from_user" value="<%= current_user.id %>">
+    <input type="hidden" name="authenticity_token">
+    <button id="submit">Send Map</button>
+  </form>
+
 <% end %>
 
