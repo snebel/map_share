@@ -17,8 +17,9 @@
 
 	<div>
 		<% if user_signed_in? %>
-			<p>Welcome, <%= current_user.email %> </p>
-			<%= link_to "logout", destroy_user_session_path, method: :delete %>
+			Signed in as <%= current_user.email %> 
+      <%= link_to "logout", destroy_user_session_path, method: :delete %>
+      <%= link_to "home", root_path %>
 		<% else %>
 			<%= link_to "sign in", new_user_session_path %>
 			<%= link_to "sign up", new_user_registration_path %>

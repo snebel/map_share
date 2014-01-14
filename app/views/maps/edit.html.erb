@@ -28,16 +28,14 @@
       <td><%= place.address %></td>
       <td><%= link_to place.link, place.link, target: "_blank" %></td>
       <td><%= place.description %></td>
-      <td>
-        <%= link_to "edit", edit_place_path(place) %>
-        <%= button_to "delete", place, :method => :delete %> 
-      </td>
+      <td><%= link_to "edit", edit_place_path(place) %></td>
+      <td><%= button_to "delete", place, method: :delete %></td>
     </tr>
   <% end %>
   <tr>
-    <td>Add new place:</td>
-    <td colspan="4">
+    <td colspan="5">
       <%= form_for @place do |f| %>
+      New Place:
         <%= f.text_field :title, placeholder: "Title" %>
         <%= f.text_field :address, placeholder: "Address or landmark" %>
         <%= f.text_field :link, placeholder: "url (optional)" %>

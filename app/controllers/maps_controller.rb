@@ -45,6 +45,12 @@ class MapsController < ApplicationController
 		map.save
 		redirect_to root_path
 	end
+
+	def destroy
+		Map.find(params[:id]).delete
+		redirect_to root_path
+	end
+
 end
 
 private
