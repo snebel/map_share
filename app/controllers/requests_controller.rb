@@ -2,10 +2,12 @@ class RequestsController < ApplicationController
   def create
     #binding.pry
     Request.create(
-      map_id: params[:map_id],
-      from_user: params[:from_user],
-      user_id: params[:user_id]
+      map_id: params[:map][:id],
+      from_user: current_user.id,
+      # user_id: receiving user's id
+      user_id: params[:user][:id]
     )
+    #binding.pry
     redirect_to root_path
   end
 
