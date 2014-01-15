@@ -8,4 +8,17 @@ class RequestsController < ApplicationController
     )
     redirect_to root_path
   end
+
+  def destroy
+    Request.find(params[:id]).delete
+    redirect_to root_path
+  end
+
+  def copy
+    req = Request.find(params[:id])
+    map = Map.find(req.map_id)
+    current_user.add_map_copy(map)
+    req.delete
+    redirect_to root_path
+  end
 end

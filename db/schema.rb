@@ -11,10 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140114212650) do
+ActiveRecord::Schema.define(version: 20140114234620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "map_memberships", force: true do |t|
+    t.integer "map_id"
+    t.integer "place_id"
+  end
 
   create_table "maps", force: true do |t|
     t.string  "title"

@@ -10,7 +10,7 @@
   }, 1)
 </script>
 
-<h1>Customize Map: <%= @map.title %></h1>
+<h1>Customize <%= "#{@map.title} (#{@map.city})" %></h1>
 <%= link_to "finished", map_path(@map) %>
 
 <h3>Current Places</h3>

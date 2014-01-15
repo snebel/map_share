@@ -6,4 +6,14 @@ class User < ActiveRecord::Base
   #attr_accessible :email, :password, :password_confirmation
   has_many :maps
   has_many :requests
+
+  def add_map_copy(map)
+    map_copy = Map.new(
+      title: map.title,
+      city: map.city,
+      user_id: self.id
+    )
+    map_copy.places = map.places
+    map_copy.save
+  end
 end
