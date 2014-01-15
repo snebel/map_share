@@ -9,12 +9,14 @@ class PlacesController < ApplicationController
 
   def edit
     @place = Place.find(params[:id])
+    @map_id = params[:map_id]
   end
 
   def update
     place = Place.find(params[:id])
-    map = Map.find(place.map_id)
+    map = Map.find(params[:map_id])
     place.update(place_params)
+    map.adjust_place(place)
     redirect_to edit_map_path(map)
   end
 

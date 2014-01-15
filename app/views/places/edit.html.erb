@@ -3,5 +3,7 @@
   <%= f.text_field :address, placeholder: "Address or landmark" %>
   <%= f.text_field :link, placeholder: "url (optional)" %>
   <%= f.text_field :description, placeholder: "description (optional)" %>
+  <%= hidden_field_tag :map_id, @map_id %>
   <%= f.submit "Edit Place", id: "submit" %>
 <% end %>
+

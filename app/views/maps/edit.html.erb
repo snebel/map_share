@@ -31,7 +31,12 @@
       <td><%= place.address %></td>
       <td><%= link_to place.link, place.link, target: "_blank" %></td>
       <td><%= place.description %></td>
-      <td><%= link_to "edit", edit_place_path(place) %></td>
+      <td>
+        <%= form_tag edit_place_path(place), method: :get do  %>
+          <%= hidden_field_tag :map_id, @map.id %>
+          <%= submit_tag "edit"%>
+        <% end %>
+      </td>
       <td>
         <%= form_for place do |f| %>
           <%= f.hidden_field :map_id, value: @map.id %>
