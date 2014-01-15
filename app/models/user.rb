@@ -8,12 +8,13 @@ class User < ActiveRecord::Base
   has_many :requests
 
   def add_map_copy(map)
-    map_copy = Map.new(
+    map_copy = Map.create(
       title: map.title,
       city: map.city,
-      user_id: self.id
+      user_id: self.id,
+      places: map.places
     )
-    map_copy.places = map.places
-    map_copy.save
+  # seems to have uninteded consequence of deleting
+  # the places from map... though only in browser not in rails console
   end
 end
