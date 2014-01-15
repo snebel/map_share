@@ -1,6 +1,5 @@
 class PlacesController < ApplicationController
   def create
-    binding.pry
     place = Place.create(place_params)
     map_id = params[:place][:map_id]
     map = Map.find(map_id)
@@ -20,9 +19,8 @@ class PlacesController < ApplicationController
   end
 
   def destroy
-    place = Place.find(params[:id])
-    map = Map.find(place.map_id)
-    Place.delete(params[:id])
+    map = Map.find(params[:place][:map_id])
+    MapMembership.where(place_id: params[:id], map_id: map.id).delete_all
     redirect_to edit_map_path(map)
   end
 
