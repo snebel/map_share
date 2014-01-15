@@ -8,9 +8,10 @@
     handler.fitMapToBounds();
     });
   }, 1)
+  
 </script>
 
-<h1><%= "#{@map.title} (#{@map.city})" %></h1>
+<h1><%= "#{@map.title} (#{@map.city}) #{@map.center_lat}, #{@map.center_lng}" %></h1>
 <%= link_to "edit map", edit_map_path(@map) %>
 
 <table>

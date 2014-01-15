@@ -1,9 +1,19 @@
 <h1>Welcome to Mapshare</h1>
-<h3><a href='/maps/new'>Add a new map</a></h3>
 
 <% if user_signed_in? %>
+  <!-- Create a New Map -->
+  <h3>Make a new map</h3>
+  <%= form_for @map do |f| %>
+    <%= f.label :title %>
+    <%= f.text_field :title, placeholder: "map title" %>
+    <%= f.label :city %>
+    <%= f.text_field :city, placeholder: "city, state" %>
+    <%= f.hidden_field :user_id, value: current_user.id %>
+    <%= f.submit "Create Map" %>
+  <% end %>
 
-  <b>Inbox</b>
+  <!-- Current Requests -->
+  <h3>Inbox</h3>
   <table>
     <% current_user.requests.each do |req| %>
     <tr>
@@ -16,7 +26,7 @@
     <% end %>
   </table>
 
-  <b>Your Maps</b>
+  <h3>Your Maps</h3>
   <table border="1px">
     <thead>
       <tr>
@@ -54,5 +64,7 @@
     <button id="submit">Send Map</button>
   </form>
 
+<% else %>
+  <h3><%= link_to 'Sign in to create a new map', new_user_session_path %></h3>
 <% end %>
 

@@ -2,11 +2,14 @@
   setTimeout(
   window.onload = function() {
     handler = Gmaps.build('Google');
-    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
-    markers = handler.addMarkers(<%=raw @hash.to_json %>);
-    handler.bounds.extendWith(markers);
-    handler.fitMapToBounds();
-    });
+    handler.buildMap({ provider: {zoom: 13}, internal: {id: 'map'} }, 
+      function(){
+        markers = handler.addMarkers(<%=raw @hash.to_json %>);
+        handler.map.centerOn({ lat: <%=@map.center_lat%>, lng: <%=@map.center_lng%> });
+        handler.bounds.extendWith(markers);
+        handler.fitMapToBounds();
+        
+      });
   }, 1)
 </script>
 

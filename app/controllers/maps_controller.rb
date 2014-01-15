@@ -1,10 +1,6 @@
 class MapsController < ApplicationController
 	before_filter :authenticate_user!, except: [:index]
 
-	def new
-		@map = Map.new
-	end
-
 	def create
 		map = Map.create(map_params)
 		# geocode params[:map][:city]
@@ -26,17 +22,24 @@ class MapsController < ApplicationController
 	def edit
 		@map = Map.find(params[:id])
 		if current_user != @map.user
-			redirect_to root_path
+			redirect_to map_path(@map)
+			# flash "sorry, you can't edit this map"
 			alert	  	
 	  end
 	  @place = Place.new
 	  @places = @map.places
-		@hash = 
-			Gmaps4rails.build_markers(@places) do |place, marker|
-  			marker.lat place.lat
-  			marker.lng place.lng
-  			marker.infowindow("#{place.title}: #{place.description}")
-			end
+	  if @map.places.any?
+			@hash = 
+				Gmaps4rails.build_markers(@places) do |place, marker|
+	  			marker.lat place.lat
+	  			marker.lng place.lng
+	  			marker.infowindow("#{place.title}: #{place.description}")
+				end
+		else
+			# {:lat=>@map.center_lat, :lng=>@map.center_lng, :infowindow=>@map.city}
+			@hash = []
+		end
+
 	end
 
 	def update
