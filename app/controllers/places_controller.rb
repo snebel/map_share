@@ -1,7 +1,10 @@
 class PlacesController < ApplicationController
   def create
+    binding.pry
     place = Place.create(place_params)
-    map = Map.find(place.map_id)
+    map_id = params[:place][:map_id]
+    map = Map.find(map_id)
+    MapMembership.create(map_id: map_id, place_id: place.id)
     redirect_to edit_map_path(map)
   end
 
@@ -27,5 +30,5 @@ end
 
 private
   def place_params
-    params.require('place').permit(:title, :address, :link, :description, :map_id)
+    params.require('place').permit(:title, :address, :link, :description)
   end

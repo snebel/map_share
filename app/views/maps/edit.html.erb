@@ -30,6 +30,8 @@
       <td><%= place.description %></td>
       <td><%= link_to "edit", edit_place_path(place) %></td>
       <td><%= button_to "delete", place, method: :delete %></td>
+      <td><%= place.lat %></td>
+      <td><%= place.lng %></td>
     </tr>
   <% end %>
   <tr>
