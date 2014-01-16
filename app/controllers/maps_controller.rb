@@ -1,10 +1,12 @@
 class MapsController < ApplicationController
-	before_filter :authenticate_user!, except: [:index]
+	before_filter :authenticate_user!
+
+	def index
+		@maps = Map.all
+	end
 
 	def create
 		map = Map.create(map_params)
-		# geocode params[:map][:city]
-		# map.center_lat = ..., map.center_lng = ...
 		redirect_to edit_map_path(map)
 	end
 
@@ -36,7 +38,6 @@ class MapsController < ApplicationController
 	  			marker.infowindow("#{place.title}: #{place.description}")
 				end
 		else
-			# {:lat=>@map.center_lat, :lng=>@map.center_lng, :infowindow=>@map.city}
 			@hash = []
 		end
 
@@ -58,7 +59,7 @@ class MapsController < ApplicationController
 		map1 = Map.find(params[:map1][:id])
 		map2 = Map.find(params[:map2][:id])
 		map2.merge(map1)
-		flash[:notice] = "map1 successfully merged into map 2."
+		flash[:notice] = "#{map1.title} successfully merged into #{map2.title}!"
 		redirect_to root_path
 	end
 

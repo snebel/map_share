@@ -1,4 +1,6 @@
 <h1>Welcome to Mapshare</h1>
+<%= link_to "See all public maps", maps_path %>
+
 
 <% if user_signed_in? %>
   <!-- Create a New Map -->
@@ -13,16 +15,25 @@
   <% end %>
 
   <!-- Current Requests -->
-  <h3>Inbox</h3>
+  <h3>Inbox (<%= current_user.requests.count %> new)</h3>
   <table>
     <% current_user.requests.each do |req| %>
-    <tr>
-      <% map = Map.find(req.map_id) %>
-        <td><%= User.find(req.from_user).email %> wants to share <%= link_to "#{map.title} (#{map.city})", map_path(map) %></td>
-        <td><%= button_to 'copy', copy_request_path(req), method: :post %></td>
-        <td><%= button_to "follow", req, method: :follow %></td>
-        <td><%= button_to "delete", req, method: :delete %></td>
-    </tr>
+      <% if req.verb == "share" %>
+        <tr>
+          <% map = Map.find(req.map_id) %>
+          <td><%= User.find(req.from_user).email %> wants to share <%= link_to "#{map.title} (#{map.city})", map_path(map) %></td>
+          <td><%= button_to 'copy', copy_request_path(req), method: :post %></td>
+          <td><%= button_to "follow", req, method: :follow %></td>
+          <td><%= button_to "delete", req, method: :delete %></td>
+        </tr>
+      <% elsif req.verb == "follow" %>
+        <tr>
+          <% map = Map.find(req.map_id) %>
+          <td><%= User.find(req.from_user).email %> wants to follow your map <%= link_to map.title, map_path(map) %></td>
+          <td><%= button_to "allow", allow_request_path(req), method: :post %></td>
+          <td><%= button_to "delete", req, method: :delete %></td>
+        </tr>
+      <% end %>
     <% end %>
   </table>
 

@@ -25,7 +25,10 @@ MapShare::Application.routes.draw do
     resources :requests
     resources :requests do
       post 'copy', on: :member
+      post 'allow', on: :member
     end
+
+    post 'requests/ask_for_map' => 'requests#ask_for_map'
     
   # Example resource route with options:
   #   resources :products do
