@@ -1,7 +1,13 @@
 #MapShare
 
-##MapShare
 
-A user-friendly app for creating and sharing custom maps.
 
-HEROKU: http://mapshare.herokuapp.com/
+Creating and sharing custom Google `maps` between `users`
+
+
+- Keep track of places by category
+- Send your maps to other users
+- 
+
+
+http://mapshare.herokuapp.com/
