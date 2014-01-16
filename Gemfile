@@ -12,6 +12,7 @@ gem 'pry'
 gem 'devise'
 gem 'gmaps4rails'
 gem 'geocoder'
+gem 'simplecov', :require => false, :group => :test
 
 group :production do
   gem 'rails_12factor'

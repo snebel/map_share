@@ -58,6 +58,7 @@ class MapsController < ApplicationController
 		map1 = Map.find(params[:map1][:id])
 		map2 = Map.find(params[:map2][:id])
 		map2.merge(map1)
+		flash[:notice] = "map1 successfully merged into map 2."
 		redirect_to root_path
 	end
 
