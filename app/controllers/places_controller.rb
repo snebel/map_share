@@ -32,7 +32,6 @@ class PlacesController < ApplicationController
   def add
     place = Place.find(params[:place][:place_id])
     map = Map.find(params[:map][:id])
-    binding.pry
     map.add_place(place)
     redirect_to root_path
   end

@@ -1,6 +1,5 @@
-<h1>Welcome to Mapshare</h1>
+<h1>Mapshare</h1>
 <%= link_to "See all  maps", maps_path %>
-<%= link_to "Create a new map", new_user_session_path %>
 
 <% if user_signed_in? %>
 
@@ -13,14 +12,14 @@
           <tr>
             <% map = Map.find(req.map_id) %>
             <td><%= User.find(req.from_user).email %> wants to share <%= link_to "#{map.title} (#{map.city})", map_path(map) %></td>
-            <td><%= button_to 'copy', copy_request_path(req), method: :post, class: "btn btn-success btn-xs" %></td>
+            <td><%= button_to 'accept', copy_request_path(req), method: :post, class: "btn btn-primary btn-xs" %></td>
             <td><%= button_to "delete", req, method: :delete, class: "btn btn-danger btn-xs" %></td>
           </tr>
         <% elsif req.verb == "follow" %>
           <tr>
             <% map = Map.find(req.map_id) %>
             <td><%= User.find(req.from_user).email %> wants to follow your map <%= link_to map.title, map_path(map) %></td>
-            <td><%= button_to "allow", allow_request_path(req), method: :post, class: "btn btn-info btn-xs" %></td>
+            <td><%= button_to "share", allow_request_path(req), method: :post, class: "btn btn-primary btn-xs" %></td>
             <td><%= button_to "delete", req, method: :delete, class: "btn btn-danger btn-xs" %></td>
           </tr>
         <% end %>
@@ -47,34 +46,66 @@
   </div>
 
 
+  <div class="panel panel-default">
+    <div class="panel-heading">Actions</div>
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <td align="center" style="padding-bottom: 10px"><h4>New Map</h4></td>
+          <%= form_for @map, html: {class: "form-inline", role: "form"} do |f| %>
+          <td>
+            
+              <%= f.label :title, class: "sr-only" %>
+              <%= f.text_field :title, class: "form-control", placeholder: "title" %>
+            
+          </td>
+          <td></td>
+          <td style="padding-bottom: 0px">
+            
+              <%= f.label :city, class: "sr-only" %>
+              <%= f.text_field :city, class: "form-control", placeholder: "city, state" %>
+              <%= f.hidden_field :user_id, value: current_user.id %>
+            
+          </td>
+          <td align="center">
+            <%= f.submit "Create Map", class: "btn btn-success" %>
+          </td>
+          <% end %>
+        </tr>
 
-    <!-- Create a New Map -->
-  <h3>Make a new map</h3>
-  <%= form_for @map do |f| %>
-    <%= f.label :title %>
-    <%= f.text_field :title, placeholder: "map title" %>
-    <%= f.label :city %>
-    <%= f.text_field :city, placeholder: "city, state" %>
-    <%= f.hidden_field :user_id, value: current_user.id %>
-    <%= f.submit "Create Map" %>
-  <% end %>
+        <tr>
+          <td align="center"><h4>Merge</h4></td>
+          <%= form_tag maps_merge_path, class: 'form-inline' do %>
+          <td>
+            <%= collection_select(:map1, :id, current_user.maps, :id, :title, {}, {class: 'form-control'}) %>
+          </td>
+          <td align="center">into</td>
+          <td>
+            <%= collection_select(:map2, :id, current_user.maps, :id, :title, {}, {class: 'form-control'}) %>
+          </td>
+          <td align="center">
+            <%= submit_tag("Merge", class: "btn btn-success") %>
+          </td>
+          <% end %> 
+        </tr>
 
-  <h3>Merge two of your maps</h3>
-  <%= form_tag maps_merge_path, class: '' do %>
-    merge <%= collection_select(:map1, :id, current_user.maps, :id, :title) %>
-    into <%= collection_select(:map2, :id, current_user.maps, :id, :title) %>
-    <%= submit_tag("Merge!") %>
-  <% end %> 
-
-
-
-
-  <h3>Share one of your maps:</h3>
-  <%= form_tag({controller: "requests", action: "create"}, method: "post", class: "") do %>
-    Send <%= collection_select(:map, :id, current_user.maps, :id, :title) %>
-    to <%= collection_select(:user, :id, User.all, :id, :email) %>
-    <%= submit_tag("Send Map") %>
-  <% end %>
+        <tr>
+          <td align="center"><h4>Send</h4></td>
+          <%= form_tag({controller: "requests", action: "create"}, method: "post", class: "form-inline") do %>
+          <td>
+            <%= collection_select(:map, :id, current_user.maps, :id, :title, {}, {class: 'form-control'}) %>
+          </td>
+          <td align="center">to</td>
+          <td>
+            <%= collection_select(:user, :id, User.all, :id, :email, {}, {class: 'form-control'}) %>
+          </td>
+          <td align="center">
+            <%= submit_tag("Send Map", class: "btn btn-success") %>
+          </td>
+          <% end %>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 <% end %>
-
