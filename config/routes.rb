@@ -15,9 +15,14 @@ MapShare::Application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   # resources :products
     resources :maps
-    resources :places
-    resources :requests
+    post 'maps/merge' => 'maps#merge'
 
+    resources :places
+    resources :places do
+      post 'add', on: :member
+    end
+
+    resources :requests
     resources :requests do
       post 'copy', on: :member
     end

@@ -12,11 +12,14 @@ class PlacesController < ApplicationController
     @map_id = params[:map_id]
   end
 
+  # not quite an accurate name
   def update
     place = Place.find(params[:id])
     map = Map.find(params[:map_id])
-    place.update(place_params)
-    map.adjust_place(place)
+    #place.update(place_params)
+    place_attrs = place_params
+    #binding.pry
+    map.adjust_place(place, place_attrs)
     redirect_to edit_map_path(map)
   end
 
@@ -24,6 +27,13 @@ class PlacesController < ApplicationController
     map = Map.find(params[:place][:map_id])
     MapMembership.where(place_id: params[:id], map_id: map.id).delete_all
     redirect_to edit_map_path(map)
+  end
+
+  def add
+    place = Place.find(params[:id])
+    map = Map.find(params[:map][:id])
+    map.add_place(place)
+    redirect_to root_path
   end
 
 end

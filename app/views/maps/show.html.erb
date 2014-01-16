@@ -8,10 +8,10 @@
     handler.fitMapToBounds();
     });
   }, 1)
-  
+
 </script>
 
-<h1><%= "#{@map.title} (#{@map.city}) #{@map.center_lat}, #{@map.center_lng}" %></h1>
+<h1><%= "#{@map.title} (#{@map.city})" %></h1>
 <%= link_to "edit map", edit_map_path(@map) %>
 
 <table>
@@ -28,6 +28,12 @@
       <td><%= place.address %></td>
       <td><%= link_to place.link, place.link, target: "_blank" %></td>
       <td><%= place.description %></td>
+      <td>
+        <%= form_for place, url: add_place_path, method: :post do |f| %>
+          <%= f.submit "Add to" %>
+          <%= collection_select(:map, :id, current_user.maps, :id, :title) %>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </table>

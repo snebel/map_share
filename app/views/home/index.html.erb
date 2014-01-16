@@ -46,11 +46,22 @@
     </tbody>
   </table>
 
+  
+
+  <h3>Merge two of your maps</h3>
+  <%= form_tag maps_merge_path, class: '' do %>
+    merge <%= collection_select(:map1, :id, current_user.maps, :id, :title) %>
+    into <%= collection_select(:map2, :id, current_user.maps, :id, :title) %>
+    <%= submit_tag("Merge!") %>
+  <% end %> 
+
+
+
 
   <h3>Share one of your maps:</h3>
   <%= form_tag({controller: "requests", action: "create"}, method: "post", class: "") do %>
-    <%= collection_select(:map, :id, current_user.maps, :id, :title) %>
-    <%= collection_select(:user, :id, User.all, :id, :email) %>
+    Send <%= collection_select(:map, :id, current_user.maps, :id, :title) %>
+    to <%= collection_select(:user, :id, User.all, :id, :email) %>
     <%= submit_tag("Send Map") %>
   <% end %>
 

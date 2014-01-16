@@ -54,6 +54,13 @@ class MapsController < ApplicationController
 		redirect_to root_path
 	end
 
+	def merge
+		map1 = Map.find(params[:map1][:id])
+		map2 = Map.find(params[:map2][:id])
+		map2.merge(map1)
+		redirect_to root_path
+	end
+
 end
 
 private
