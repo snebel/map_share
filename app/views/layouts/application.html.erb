@@ -12,8 +12,9 @@
 
 </head>
 <body>
-	<p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
+  <div class="container">
+	<%= notice %>
+  <%= alert %>
 
 	<div>
 		<% if user_signed_in? %>
@@ -27,8 +28,9 @@
 	</div>
 
   
-
-	<%= yield %>
+  
+	  <%= yield %>
+  </div>
 
 </body>
 </html>

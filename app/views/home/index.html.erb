@@ -1,9 +1,54 @@
 <h1>Welcome to Mapshare</h1>
-<%= link_to "See all public maps", maps_path %>
-
+<%= link_to "See all  maps", maps_path %>
+<%= link_to "Create a new map", new_user_session_path %>
 
 <% if user_signed_in? %>
-  <!-- Create a New Map -->
+
+  <!-- Current Requests -->
+  <div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Inbox (<%= current_user.requests.count %> new)</h3></div>
+    <table class="table table-condensed">
+      <% current_user.requests.each do |req| %>
+        <% if req.verb == "share" %>
+          <tr>
+            <% map = Map.find(req.map_id) %>
+            <td><%= User.find(req.from_user).email %> wants to share <%= link_to "#{map.title} (#{map.city})", map_path(map) %></td>
+            <td><%= button_to 'copy', copy_request_path(req), method: :post, class: "btn btn-success btn-xs" %></td>
+            <td><%= button_to "delete", req, method: :delete, class: "btn btn-danger btn-xs" %></td>
+          </tr>
+        <% elsif req.verb == "follow" %>
+          <tr>
+            <% map = Map.find(req.map_id) %>
+            <td><%= User.find(req.from_user).email %> wants to follow your map <%= link_to map.title, map_path(map) %></td>
+            <td><%= button_to "allow", allow_request_path(req), method: :post, class: "btn btn-info btn-xs" %></td>
+            <td><%= button_to "delete", req, method: :delete, class: "btn btn-danger btn-xs" %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </table>
+  </div>
+
+
+  <!-- User's Maps -->
+  <div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Your Maps</h3></div>
+    <table class="table">
+      <tbody>
+      <% current_user.maps.each do |map| %>
+        <tr>
+          <td><%= link_to(map.title, map_path(map)) %></td>
+          <td><%= map.city %></td>
+          <td><%= link_to("edit", edit_map_path(map)) %></td> 
+          <td><%= button_to "delete", map, method: :delete, class: "btn btn-danger btn-xs" %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+
+
+    <!-- Create a New Map -->
   <h3>Make a new map</h3>
   <%= form_for @map do |f| %>
     <%= f.label :title %>
@@ -13,51 +58,6 @@
     <%= f.hidden_field :user_id, value: current_user.id %>
     <%= f.submit "Create Map" %>
   <% end %>
-
-  <!-- Current Requests -->
-  <h3>Inbox (<%= current_user.requests.count %> new)</h3>
-  <table>
-    <% current_user.requests.each do |req| %>
-      <% if req.verb == "share" %>
-        <tr>
-          <% map = Map.find(req.map_id) %>
-          <td><%= User.find(req.from_user).email %> wants to share <%= link_to "#{map.title} (#{map.city})", map_path(map) %></td>
-          <td><%= button_to 'copy', copy_request_path(req), method: :post %></td>
-          <td><%= button_to "follow", req, method: :follow %></td>
-          <td><%= button_to "delete", req, method: :delete %></td>
-        </tr>
-      <% elsif req.verb == "follow" %>
-        <tr>
-          <% map = Map.find(req.map_id) %>
-          <td><%= User.find(req.from_user).email %> wants to follow your map <%= link_to map.title, map_path(map) %></td>
-          <td><%= button_to "allow", allow_request_path(req), method: :post %></td>
-          <td><%= button_to "delete", req, method: :delete %></td>
-        </tr>
-      <% end %>
-    <% end %>
-  </table>
-
-  <h3>Your Maps</h3>
-  <table border="1px">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>City</th>
-      </tr>
-    </thead>
-    <tbody>
-    <% current_user.maps.each do |map| %>
-      <tr>
-        <td><%= link_to(map.title, map_path(map)) %></td>
-        <td><%= map.city %></td>
-        <td><%= link_to("edit", edit_map_path(map)) %></td> 
-        <td><%= button_to "delete", map, method: :delete %></td>
-      </tr>
-    <% end %>
-    </tbody>
-  </table>
-
-  
 
   <h3>Merge two of your maps</h3>
   <%= form_tag maps_merge_path, class: '' do %>
@@ -76,7 +76,5 @@
     <%= submit_tag("Send Map") %>
   <% end %>
 
-<% else %>
-  <h3><%= link_to 'Sign in to create a new map', new_user_session_path %></h3>
 <% end %>
 
