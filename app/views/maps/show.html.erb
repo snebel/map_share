@@ -8,39 +8,34 @@
     handler.fitMapToBounds();
     });
   }, 1)
-
 </script>
 
 <h1><%= "#{@map.title} (#{@map.city})" %></h1>
 <%= link_to "edit map", edit_map_path(@map) %>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Address</th>
-    <th>Link</th>
-    <th>Description</th>
-    <th></th>
-  </tr>
-  <% @map.places.each do |place| %>
-    <tr>
-      <td><%= place.title %></td>
-      <td><%= place.address %></td>
-      <td><%= link_to place.link, place.link, target: "_blank" %></td>
-      <td><%= place.description %></td>
-      <td><%= place.id %></td>
-      <td>
-        <%= form_for place, url: add_place_path, method: :post do |f| %>
-          <%= f.hidden_field :place_id, value: place.id %>
-          <%= f.submit "Add to" %>
-          <%= collection_select(:map, :id, current_user.maps, :id, :title) %>
-        <% end %>
-
-      </td>
-    </tr>
-  <% end %>
-</table>
-
-<div style='width: 800px;'  class="map">
-  <div id="map" class="map" style='width: 800px; height: 600px;'></div>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Places (<%= @map.places.count %>)</h3></div>
+  <table class="table table-condensed table-condensed">
+    <% @map.places.each do |place| %>
+      <tr>
+        <td><%= place.title %></td>
+        <td><%= place.address %></td>
+        <td><%= link_to place.link, place.link, target: "_blank" %></td>
+        <td><%= place.description %></td>
+        <td align="right">
+          <%= form_for place, url: add_place_path, method: :post, html: {class: "form-inline", role: "form"} do |f| %>
+            <%= f.hidden_field :place_id, value: place.id %>
+            <%= f.submit "Add to", class: "btn btn-primary btn-xs" %>
+            <%= collection_select(:map, :id, current_user.maps, :id, :title, {}, {class: ''}) %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
 </div>
+
+<div class="panel panel-success">
+  <div class="panel-body" id="map" style="height: 600px"></div>
+</div>
+
+

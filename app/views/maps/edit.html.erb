@@ -7,61 +7,63 @@
         markers = handler.addMarkers(<%=raw @hash.to_json %>);
         handler.map.centerOn({ lat: <%=@map.center_lat%>, lng: <%=@map.center_lng%> });
         handler.bounds.extendWith(markers);
-        handler.fitMapToBounds();
-        
+        handler.fitMapToBounds();     
       });
   }, 1)
 </script>
 
-<h1>Customize <%= "#{@map.title} (#{@map.city})" %></h1>
+<h1>Edit Map: <%= "#{@map.title} (#{@map.city})" %></h1>
 <%= link_to "finished", root_path %>
 
-<h3>Current Places</h3>
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Address</th>
-    <th>Link</th>
-    <th>Description</th>
-    <th></th>
-  </tr>
-  <% @map.places.each do |place| %>
-    <tr>
-      <td><%= place.title %></td>
-      <td><%= place.address %></td>
-      <td><%= link_to place.link, place.link, target: "_blank" %></td>
-      <td><%= place.description %></td>
-      <td>
-        <%= form_tag edit_place_path(place), method: :get do  %>
-          <%= hidden_field_tag :map_id, @map.id %>
-          <%= submit_tag "edit"%>
-        <% end %>
-      </td>
-      <td>
-        <%= form_for place do |f| %>
-          <%= f.hidden_field :map_id, value: @map.id %>
-          <%= button_to "remove", place, method: :delete %>
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
-  <tr>
-    <td colspan="5">
-      <%= form_for @place do |f| %>
-      New Place:
-        <%= f.text_field :title, placeholder: "Title" %>
-        <%= f.text_field :address, placeholder: "Address or landmark" %>
-        <%= f.text_field :link, placeholder: "url (optional)" %>
-        <%= f.text_field :description, placeholder: "description (optional)" %>
-        <%= f.hidden_field :map_id, value: @map.id %>
-        <%= f.submit "Add Place", id: "submit" %>
-      <% end %>
-    </td>
-  </tr>
-</table>
+<div class="panel panel-default">
+  <div class="panel-heading"><h3 class="panel-title">Places (<%= @map.places.count %>)</h3></div>
+  <table class="table table-condensed">
+    <% @map.places.each do |place| %>
+      <tr>
+        <td><%= place.title %></td>
+        <td><%= place.address %></td>
+        <td><%= link_to place.link, place.link, target: "_blank" %></td>
+        <td><%= place.description %></td>
+        <td>
+          <%= form_tag edit_place_path(place), method: :get do  %>
+            <%= hidden_field_tag :map_id, @map.id %>
+            <%= submit_tag "edit", class: "btn btn-primary btn-xs" %>
+          <% end %>
+        </td>
+        <td align="right">
+          <%= form_for place do |f| %>
+            <%= f.hidden_field :map_id, value: @map.id %>
+            <%= button_to "remove", place, method: :delete, class: "btn btn-danger btn-xs" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
 
-
-<div style='width: 800px;'  class="map">
-  <div id="map" class="map" style='width: 800px; height: 600px;'></div>
+<div class="navbar-form" align="center" style="margin-top: -10px">
+<%= form_for @place, html: {class: "form-inline"} do |f| %>
+  <div class="form-group has-info">
+    <%= f.label :title, class: "sr-only" %>
+    <%= f.text_field :title, class: "form-control input-sm", placeholder: "title" %>
+  </div>
+  <div class="form-group has-info">
+    <%= f.label :address, class: "sr-only" %>
+    <%= f.text_field :address, class: "form-control input-sm", placeholder: "address or landmark" %>
+  </div>
+  <div class="form-group has-info">
+    <%= f.label :link, class: "sr-only" %>
+    <%= f.text_field :link, class: "form-control input-sm", placeholder: "url (optional)" %>
+  </div>
+  <div class="form-group has-info">
+    <%= f.label :description, class: "sr-only" %>
+    <%= f.text_field :description, class: "form-control input-sm", placeholder: "description (optional)" %>
+  </div>
+  <%= f.hidden_field :map_id, value: @map.id %>
+  <%= f.submit "Add Place", id: "submit", class: "btn btn-success btn-sm" %>
+<% end %>
+</div>
+<div class="panel panel-success">
+  <div class="panel-body" id="map" style="height: 600px"></div>
 </div>
 

@@ -33,7 +33,8 @@ class PlacesController < ApplicationController
     place = Place.find(params[:place][:place_id])
     map = Map.find(params[:map][:id])
     map.add_place(place)
-    redirect_to root_path
+    flash[:notice] = "#{place.title} added to #{map.title}"
+    redirect_to map_path
   end
 
 end
