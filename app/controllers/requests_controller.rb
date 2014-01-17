@@ -26,7 +26,6 @@ class RequestsController < ApplicationController
   end
 
   def ask_for_map
-    #binding.pry
     map = Map.find(params[:map_id])
     Request.create(
       map_id: map.id,
@@ -34,6 +33,7 @@ class RequestsController < ApplicationController
       user_id: map.user_id,
       verb: "follow"
     )
+    flash[:notice] = "Map requested!"
     redirect_to maps_path
   end
 
