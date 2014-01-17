@@ -19,7 +19,7 @@
           <tr>
             <% map = Map.find(req.map_id) %>
             <td><%= User.find(req.from_user).email %> wants to follow your map <%= link_to map.title, map_path(map) %></td>
-            <td align="center"><%= button_to "share", allow_request_path(req), method: :post, class: "btn btn-primary btn-xs" %></td>
+            <td align="center"><%= button_to "allow", allow_request_path(req), method: :post, class: "btn btn-primary btn-xs" %></td>
             <td align="right"><%= button_to "delete", req, method: :delete, class: "btn btn-danger btn-xs" %></td>
           </tr>
         <% end %>

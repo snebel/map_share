@@ -1,26 +1,29 @@
 <h1>All Maps</h1>
 
-<table border="1px">
-  <thead>
+<div class="panel panel-default">
+  <div class="panel-heading"><h2 class="panel-title">All Public Maps (<%= @maps.count %>)</h2></div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>City</th>
+        <th>Owner</th>
+      </tr>
+    </thead>
+    <tbody>
+  <% @maps.each do |map| %>
     <tr>
-      <th>Title</th>
-      <th>City</th>
-      <th>Owner</th>
+      <td><%= link_to(map.title, map_path(map)) %></td>
+      <td><%= map.city %></td>
+      <td><%= User.find(map.user_id).email %></td> 
+      <td align="right">
+        <%= form_tag({controller: "requests", action: "ask_for_map"}, method: "post", class: "") do %>
+          <%= hidden_field_tag :map_id, map.id %>
+          <%= submit_tag "Request this Map", class: "btn btn-primary btn-sm" %>
+        <% end %>
+      </td>
     </tr>
-  </thead>
-  <tbody>
-<% @maps.each do |map| %>
-  <tr>
-    <td><%= link_to(map.title, map_path(map)) %></td>
-    <td><%= map.city %></td>
-    <td><%= User.find(map.user_id).email %></td> 
-    <td>
-      <%= form_tag({controller: "requests", action: "ask_for_map"}, method: "post", class: "") do %>
-        <%= hidden_field_tag :map_id, map.id %>
-        <%= submit_tag("Request this Map") %>
-      <% end %>
-    </td>
-  </tr>
-<% end %>
-</tbody>
-</table>
+  <% end %>
+  </tbody>
+  </table>
+</div>

@@ -24,9 +24,8 @@ class MapsController < ApplicationController
 	def edit
 		@map = Map.find(params[:id])
 		if current_user != @map.user
-			redirect_to map_path(@map)
-			# flash "sorry, you can't edit this map"
-			alert	  	
+			flash[:notice] = "You can't edit this map if you aren't the owner"
+			redirect_to map_path(@map)  	
 	  end
 	  @place = Place.new
 	  @places = @map.places
